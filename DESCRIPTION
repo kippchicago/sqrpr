@@ -1,8 +1,20 @@
 Package: sqrpr
-Title: What the Package Does (one line, title case)
+Title: Chicago Public Schools School Quality Rating Policy metric calculations
 Version: 0.0.0.9000
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (one paragraph)
-Depends: R (>= 3.1.1)
-License: What license is it under?
+Authors@R: "Chris Haid <chaid@kippchicago.org> [aut, cre]"
+URL: https://github.com/chrishaid/sqrpr/
+BugReports: https://github.com/chrishaid/sqrpr/issues
+Description: sqrpr provides a set of tools for calculating NWEA MAP based
+    metrics that are used by CPS in calculating SQRP levels for schools. These
+    tools take into account varios CPS idiosyncracies like truncating gorwth at
+    the 1st and 99th percentiles, using a CPS specific distribution for
+    school-level growth norms, and the 36 week spring-to-spring NWEA growth
+    calendar.
+Depends:
+    R (>= 3.1.1)
+License: MIT + file LICENSE
 LazyData: true
+Imports:
+    dplyr
+Suggests:
+    testthat

@@ -16,6 +16,8 @@ Depends:
 License: MIT + file LICENSE
 LazyData: true
 Imports: 
-    assertthat
+    assertthat,
+    ensurer,
+    stringr
 Suggests: 
     testthat

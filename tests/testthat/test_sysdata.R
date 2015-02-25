@@ -1,4 +1,3 @@
-library(stringr)
 context("System data")
 
 #data(nwea_cps_school_level_norms)

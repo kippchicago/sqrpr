@@ -4,8 +4,8 @@
 \name{sqrpr}
 \alias{sqrpr}
 \alias{sqrpr-package}
-\title{sqrpr.}
+\title{sqrpr}
 \description{
-sqrpr.
+sqrpr
 }
 

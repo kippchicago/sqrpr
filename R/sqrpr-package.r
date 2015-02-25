@@ -1,4 +1,4 @@
-#' sqrpr.
+#' sqrpr
 #'
 #' @name sqrpr
 #' @docType package

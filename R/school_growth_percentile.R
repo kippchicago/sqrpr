@@ -116,7 +116,7 @@ school_growth_percentile <- function(.data,
     map_matched_final <- map_matched_final %>% 
       dplyr::mutate(testritscore_final=testritscore_end_truncated)
   }
-  map_matched_final %>%
+  map_matched_final<-map_matched_final %>%
     dplyr::group_by(school_end, 
                     grade_end, 
                     measurementscale, 
@@ -145,6 +145,14 @@ school_growth_percentile <- function(.data,
                   growth_pctl = ifelse(growth_pctl>.99, .99, growth_pctl),
                   growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl))
     
+  
+  
+  # package up data
+  out<-list(student_data=map_matched, 
+            grade_level_data=map_matched_final)
+  
+  #return 
+  out
 }
 
 

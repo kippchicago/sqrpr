@@ -85,17 +85,18 @@ test_that("school_growth_percentile() figures proper school level perentiles" ,{
 
 test_that("collapse_grade_to_school() collapses everthing just fine" ,{
   est_pctls<-school_growth$grade_level
-  collapsed <- collapse_grade_to_school(est_pctls)
+  collapsed <- collapse_grade_to_school(est_pctls) %>%
+    arrange(grades_served, school, measurementscale)
   
   expect_equal(nrow(collapsed), 6)
   expect_equal(ncol(collapsed), 11)
   # reading
-  expect_equal(as.numeric(collapsed[1,"growth_pctl"]),.97)
-  expect_equal(as.numeric(collapsed[2,"growth_pctl"]),.06)
-  expect_equal(as.numeric(collapsed[3,"growth_pctl"]),.93)
-  expect_equal(as.numeric(collapsed[4,"growth_pctl"]),.86)
-  expect_equal(as.numeric(collapsed[5,"growth_pctl"]),.01)
-  expect_equal(as.numeric(collapsed[6,"growth_pctl"]),.86)
+  expect_equal(as.numeric(collapsed[1,"growth_pctl"]), 0.93)
+  expect_equal(as.numeric(collapsed[2,"growth_pctl"]), 0.86)
+  expect_equal(as.numeric(collapsed[3,"growth_pctl"]), 0.86)
+  expect_equal(as.numeric(collapsed[4,"growth_pctl"]), 0.01)
+  expect_equal(as.numeric(collapsed[5,"growth_pctl"]), 0.97)
+  expect_equal(as.numeric(collapsed[6,"growth_pctl"]), 0.06)
   
   
   

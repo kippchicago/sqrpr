@@ -37,7 +37,8 @@ respect to subject and term}
 Default is `TRUE`}
 }
 \value{
-data.frame with school level growth percentiles
+list with three data frames attached
+showing student-, grade-, and school-level growth percentiles
 }
 \description{
 \code{school_growth_percentile} is the workhourse function

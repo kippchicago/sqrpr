@@ -17,7 +17,8 @@
 #' @param truncate_growth whether or not to truncate student growth at 1st and 99th percentiles
 #' Default is `TRUE`
 #' 
-#' @return data.frame with school level growth percentiles
+#' @return  list with three data frames attached
+#' showing student-, grade-, and school-level growth percentiles
 #' 
 
 school_growth_percentile <- function(.data, 
@@ -146,10 +147,15 @@ school_growth_percentile <- function(.data,
                   growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl))
     
   
+  # get school_level data
+  
+  school_level_growth_pctls<-collapse_grade_to_school(map_matched_final)
   
   # package up data
-  out<-list(student_data=map_matched, 
-            grade_level_data=map_matched_final)
+  out<-list(student_level=map_matched, 
+            grade_level=map_matched_final,
+            school_level = school_level_growth_pctls
+            )
   
   #return 
   out
@@ -179,4 +185,76 @@ truncated_growth <- function(truncation_percentile=.99,
              mean=typical_growth,
              sd=sd_growth)
   round(growth + start_rit)
+}
+
+#' @title Calculates school-level (i.e, cohort) growth percentiles a la CPS's SQRP
+#'
+#' @description \code{collapse_grade_to_school} calculates school level growth
+#' using CPS specific rules (e.g., using a CPS district wide standard deviation for
+#' schools that have more than one grade leve).
+#'
+#' @param .data data passed to function 
+#' 
+#' @return data.frame 
+#' 
+collapse_grade_to_school <- function(.data){
+  # create skeleton that properly accounts for number of grades.  If 
+  # we have a single grade at a school, then we can take the incoming data 
+  # as is. Otherwise we got do some weighted averaging if the number of grades
+  # is greater than 1.
+  
+  est_pctls<-.data
+  
+  skeleton <- est_pctls %>% 
+    dplyr::group_by(school_end, measurementscale) %>%
+    dplyr::summarize(grade_low=min(grade_end),
+              grade_high=max(grade_end),
+              n_grades=1+grade_high-grade_low)
+
+  # single grade schools
+  single_grade_schools <- skeleton %>% 
+    dplyr::filter(n_grades==1) %>%
+    dplyr::select(school_end, measurementscale) %>%
+    dplyr::inner_join(est_pctls,
+               by=c("school_end", "measurementscale")) %>%
+    dplyr::rename(school=school_end, grades_served=grade_end, N=N_students) %>%
+    dplyr::mutate(grades_served=as.character(grades_served))  %>%
+    dplyr::select(-c(fallwinterspring_start:fallwinterspring_end))
+  
+  
+  #multi grade schools 
+  multi_grade_schools <- skeleton %>% 
+    dplyr::filter(n_grades>1) %>%
+    dplyr::select(school_end, measurementscale) %>%
+    dplyr::inner_join(est_pctls,
+               by=c("school_end", "measurementscale")) %>%
+    dplyr::rename(school=school_end) %>% 
+    dplyr::group_by(school, measurementscale) %>%
+    dplyr::summarize(
+              grades_served=paste(unique(grade_end), collapse=" "),
+              N=sum(N_students), 
+              avg_rit_start=weighted.mean(avg_rit_start, N_students),
+              avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students),0.1,ceiling),
+              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students),1)
+              ) %>% 
+    dplyr::inner_join(dplyr::filter(cps_constants, 
+                                    variable=="sd_growth") %>%
+                        dplyr::select(
+                          measurementscale,
+                          sd_growth=value),
+                      by="measurementscale"
+      ) %>%
+    dplyr::mutate(growth=avg_rit_end-avg_rit_start,
+           z_score=round(growth-typical_growth_mean,1)/sd_growth,
+           growth_pctl = round(pnorm(z_score),2),
+           growth_pctl = ifelse(growth_pctl>.99, .99, growth_pctl),
+           growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl)
+    )
+  
+  stacked <- dplyr::rbind_list(multi_grade_schools,
+                      single_grade_schools)
+  
+  # return
+  stacked
+  
 }

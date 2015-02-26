@@ -1,5 +1,9 @@
 context("School Growth Percentile")
 
+#seed
+seed <- 1896
+set.seed(seed)
+
 #
 data(ex_CombinedAssessmentResults)
 data(ex_CombinedStudentsBySchool)
@@ -41,16 +45,20 @@ test_that("school_growth_percentiile fails gracefully", {
 })
 
 test_that("school_growth_percentiile produces proper output", {
-  expect_equal(length(school_growth), 2)
-  expect_equal(names(school_growth), c("student_data", "grade_level_data"))
-  expect_equal(nrow(school_growth$student_data), 1345)
-  expect_equal(nrow(school_growth$grade_level_data), 12)
-  expect_equal(round(mean(school_growth$grade_level_data$growth_pctl),4), 
+  expect_equal(length(school_growth), 3)
+  expect_equal(names(school_growth), c("student_level", "grade_level", "school_level"))
+  expect_equal(nrow(school_growth$student_level), 1345)
+  expect_equal(nrow(school_growth$grade_level), 12)
+  expect_equal(nrow(school_growth$school_level), 6)
+  expect_equal(round(mean(school_growth$grade_level$growth_pctl),4), 
                0.5725)
+  
+  expect_equal(round(mean(school_growth$school_level$growth_pctl),3), 
+               0.615)
 })
 
 test_that("school_growth_percentile() figures proper school level perentiles" ,{
-  est_pctls<-school_growth$grade_level_data %>% 
+  est_pctls<-school_growth$grade_level %>% 
     ungroup %>%
     select(measurementscale, 
            grade_end, 
@@ -74,3 +82,22 @@ test_that("school_growth_percentile() figures proper school level perentiles" ,{
   expect_equal(as.numeric(est_pctls[11,"growth_pctl"]), 0.99)
   expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.99)
 })
+
+test_that("collapse_grade_to_school() collapses everthing just fine" ,{
+  est_pctls<-school_growth$grade_level
+  collapsed <- collapse_grade_to_school(est_pctls)
+  
+  expect_equal(nrow(collapsed), 6)
+  expect_equal(ncol(collapsed), 11)
+  # reading
+  expect_equal(as.numeric(collapsed[1,"growth_pctl"]),.97)
+  expect_equal(as.numeric(collapsed[2,"growth_pctl"]),.06)
+  expect_equal(as.numeric(collapsed[3,"growth_pctl"]),.93)
+  expect_equal(as.numeric(collapsed[4,"growth_pctl"]),.86)
+  expect_equal(as.numeric(collapsed[5,"growth_pctl"]),.01)
+  expect_equal(as.numeric(collapsed[6,"growth_pctl"]),.86)
+  
+  
+  
+})
+

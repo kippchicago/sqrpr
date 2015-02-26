@@ -6,6 +6,9 @@
 \usage{
 ensure_two_seasons_only(.)
 }
+\arguments{
+\item{.}{the thing to be ensured}
+}
 \description{
 checks if `testterm` field has exactly two terms
 }

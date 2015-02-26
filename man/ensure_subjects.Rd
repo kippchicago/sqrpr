@@ -6,6 +6,9 @@
 \usage{
 ensure_subjects(.)
 }
+\arguments{
+\item{.}{the thing to be ensured}
+}
 \description{
 checks if `measurementscale` field only contains "Mathematics" or
 "Reading"

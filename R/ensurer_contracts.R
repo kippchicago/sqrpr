@@ -3,6 +3,8 @@
 #' @description checks if `measurementscale` field only contains "Mathematics" or
 #' "Reading"
 #' 
+#' @param . the thing to be ensured
+#' 
 ensure_subjects <- 
   ensurer::ensures_that(all(.$measurementscale %in% c("Reading", "Mathematics"))~
                           paste0("Your data contains subjects besides Reading and Mathematics. ",  
@@ -13,6 +15,8 @@ ensure_subjects <-
 #' @title Ensure only two test terms in data
 #' 
 #' @description checks if `testterm` field has exactly two terms
+#' 
+#' @param . the thing to be ensured
 #' 
 ensure_two_seasons_only <- 
   ensurer::ensures_that(length(unique(.$termname))==2 ~

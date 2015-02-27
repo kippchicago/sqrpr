@@ -16,7 +16,7 @@
 #' @param race_indicator identifies race and ethnicity data
 #' @param school_indicator column that identifies school
 #' 
-#' @return  list with three data frames attached
+#' @return  list with four data frames attached
 school_attainment_percentile <- function(.data, 
                                          student_column="studentid",
                                          grade_column="grade", 
@@ -63,10 +63,15 @@ school_attainment_percentile <- function(.data,
   school_level_data <- collapse_grade_to_school_attainment(grade_level_data) 
   
   #return
-  out<-list(grade_level=grade_level_data,
+  out<-list(student_level=map_df,
+            grade_level=grade_level_data,
             school_level=school_level_data
   )
   
+  #set class
+  class(out)<- c("sqrp_attainment", class(out))
+  
+  #return
   out
 
 }

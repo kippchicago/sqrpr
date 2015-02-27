@@ -21,8 +21,9 @@
 #' equate missing pre-test (i.e., prior-spring) RIT scores per CPS 
 #' guidelines.
 #' 
-#' @return  list with three data frames attached
-#' showing student-, grade-, and school-level growth percentiles
+#' @return  list with four data frames attached
+#' showing student-, grade-, and school-level growth percentiles 
+#' as well as the original data. 
 #' 
 
 school_growth_percentile <- function(.data, 
@@ -179,11 +180,15 @@ school_growth_percentile <- function(.data,
   school_level_growth_pctls<-collapse_grade_to_school(map_matched_final)
   
   # package up data
-  out<-list(student_level=map_matched, 
+  out<-list(original_data=map_df,
+            student_level=map_matched, 
             grade_level=map_matched_final,
             school_level = school_level_growth_pctls
             )
   
+  #set_class
+  
+  class(out)<-c("sqrp_growth", class(out))
   #return 
   out
 }

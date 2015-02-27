@@ -3,9 +3,9 @@
 #' @description \code{school_growth_percentile} is the workhourse function
 #' that calculates school growth percentiles
 #'
+#' @param .data a long format (i.e., combined) Comprehensive Data File
 #' @param student_column column that uniquely identifies students with
 #' respect to subject and term
-#' @param .data a long format (i.e., combined) Comprehensive Data File
 #' @param grade_column  column that identifies grade levels
 #' @param subject_column which column identifies measurement scale
 #' @param rit_column column that identifes RIT score
@@ -234,8 +234,8 @@ collapse_grade_to_school <- function(.data){
               grades_served=paste(unique(grade_end), collapse=" "),
               N=sum(N_students), 
               avg_rit_start=weighted.mean(avg_rit_start, N_students),
-              avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students),0.1,ceiling),
-              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students),1)
+              avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
+              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1)
               ) %>% 
     dplyr::inner_join(dplyr::filter(cps_constants, 
                                     variable=="sd_growth") %>%

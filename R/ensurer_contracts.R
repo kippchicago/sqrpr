@@ -24,3 +24,16 @@ ensure_two_seasons_only <-
                                  "No more, no less."
                           )
   )
+
+#' @title Ensure only two test terms in data
+#' 
+#' @description checks if `testterm` field has exactly two terms
+#' 
+#' @param . the thing to be ensured
+#' 
+ensure_one_seasons_only <- 
+  ensurer::ensures_that(length(unique(.$termname))==1 ~
+                          paste0("You must have exactly one term in your data.",
+                                 "No more, no less."
+                          )
+  )

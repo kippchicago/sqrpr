@@ -27,5 +27,5 @@ test_that("System data conform with expectations", {
                )
   
   expect_equal(round(mean(nwea_cps_school_level_norms$rit_start),3), 197.097)
-  expect_equal(round(mean(cps_constants$value),6), 4.402439)
+  expect_equal(round(mean(cps_constants$value),5), 64.84548)
 })

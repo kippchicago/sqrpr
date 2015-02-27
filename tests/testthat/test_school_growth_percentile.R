@@ -64,7 +64,8 @@ test_that("school_growth_percentile() figures proper school level perentiles" ,{
            grade_end, 
            avg_rit_start, 
            avg_rit_end, 
-           growth_pctl)
+           growth_pctl) %>%
+    arrange(desc(measurementscale),grade_end, avg_rit_start)
   
   # reading
   expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.99)

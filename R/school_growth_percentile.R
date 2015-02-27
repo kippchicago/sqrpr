@@ -16,6 +16,10 @@
 #' @param growth_season currenlty not used,
 #' @param truncate_growth whether or not to truncate student growth at 1st and 99th percentiles
 #' Default is `TRUE`
+#' @param fall_equate_scores a data.frame of fall MAP results with columns `studentid`, 
+#' `measurementscale`, `testritscore`, and `grade`.  These data are used to 
+#' equate missing pre-test (i.e., prior-spring) RIT scores per CPS 
+#' guidelines.
 #' 
 #' @return  list with three data frames attached
 #' showing student-, grade-, and school-level growth percentiles
@@ -31,7 +35,8 @@ school_growth_percentile <- function(.data,
                                      ell_indicator="iep", 
                                      school_indicator="schoolname",
                                      growth_season="SS",
-                                     truncate_growth=TRUE){
+                                     truncate_growth=TRUE,
+                                     fall_equate_scores=NULL){
   
   #select only necessary columns
   map_df<-.data %>%
@@ -76,7 +81,29 @@ school_growth_percentile <- function(.data,
   
   cols_reorderd<-c(non_seasons_cols, start_cols, end_cols)
   
-  map_matched <- map_matched[,cols_reorderd] %>%
+  map_matched <- map_matched[,cols_reorderd]
+  
+  # Equating bit
+  if(missing(fall_equate_scores)){
+    unmatched<-nrow(filter(map_matched, is.na(testritscore_start)))
+    
+    if(unmatched>0) {
+      warning(paste0("Your data currently has ", unmatched, 
+                     " student-subject pairs that are missing ",
+                     "pre-test scores from the prior spring.\n\n",
+                     "These students will be dropped now\n\n",
+                     "You can equate fall scores to prior spring scores ",
+                     "by passing a data frame with fall scores to ",
+                     "the fall_equate_scores argument."))
+    }
+    
+  } else {
+    map_matched <- equate_fall_to_spring(map_matched,
+                                         fall_equate_scores %>%
+                                           ensure_fall_data)
+  }
+  
+  map_matched <- map_matched %>%
     dplyr::inner_join(norms_students_2011 %>%
                         dplyr::select(measurementscale=MeasurementScale,
                                       grade_start=StartGrade,
@@ -258,3 +285,70 @@ collapse_grade_to_school <- function(.data){
   stacked
   
 }
+
+
+#' @title Applies CPS fall-to-prior-spring equating
+#'
+#' @description \code{equate_fall_to_spring} applies the function 
+#' \code{cps_equate} on fall data that must be passed in and returns
+#' a data frame with missing prior_spring test scores updated with
+#' equated scores.  An `equated` indcator is added to the 
+#' resulting data frame.
+#'
+#' @param growth_data season matched growth data frame
+#' @param fall_data a data frame of fall data with columns  
+#' `studentid`, `measurmentscale`, `grade`, and `testritscore`
+#' 
+#' @return data.frame with `nrow(growth_data)` rows and 
+#' `ncol(growth_data) + 1` columns
+#' 
+equate_fall_to_spring <- function(growth_data=map_matched, 
+                                  fall_data=NA){
+  
+  # id students with missing prior spring scores
+  missing_prior_spring <- growth_data %>%
+    dplyr::filter(is.na(testritscore_start)) %>%
+    dplyr::select(studentid,
+                  grade_start,
+                  grade_end,
+                  measurementscale, 
+                  testritscore_end, 
+                  testritscore_start)
+  
+  # match missing scores with existing fall scores and
+  # impute prior spring
+  matched<-missing_prior_spring %>%
+    dplyr::inner_join(fall_data %>%
+                        dplyr::rename(testritscore_fall=testritscore,
+                       grade_fall=grade),
+              by=c("studentid",
+                   "measurementscale")) %>%
+    dplyr::mutate(test_rit_score_equated=cps_equate(rit_score = testritscore_fall,
+                                             subject=measurementscale,
+                                              grade_level=grade_end),
+                  testritscore_equated=round(test_rit_score_equated))
+  
+  
+  out<-growth_data %>%
+    dplyr::left_join(matched %>% 
+                       select(studentid, 
+                              measurementscale,
+                              testritscore_equated),
+                     by=c("studentid", 
+                          "measurementscale")) %>%
+    dplyr::mutate(equated=!is.na(testritscore_equated),
+           testritscore_start=ifelse(equated,
+                                     testritscore_equated,
+                                     testritscore_start)
+           ) %>%
+    dplyr::select(-testritscore_equated)
+    
+  
+  # return
+  out
+  
+  
+}
+
+
+

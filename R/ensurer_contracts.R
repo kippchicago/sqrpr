@@ -25,7 +25,7 @@ ensure_two_seasons_only <-
                           )
   )
 
-#' @title Ensure only two test terms in data
+#' @title Ensure only one test term in data
 #' 
 #' @description checks if `testterm` field has exactly two terms
 #' 
@@ -37,3 +37,25 @@ ensure_one_seasons_only <-
                                  "No more, no less."
                           )
   )
+
+
+#' @title Ensure fall data has proper columns 
+#' 
+#' @description checks `names(.)` for correct columns
+#' 
+#' @param . the thing to be ensured
+#' 
+ensure_fall_data <- 
+  ensurer::ensures_that(all(names(.)==c("studentid", 
+                                    "measurementscale",
+                                    "testritscore",     
+                                    "grade")) ~
+                          paste0("Fall data for equating must have columns:",
+                                 " studentid, measurementscale, testritscore, and grade."
+                          )
+  )
+
+
+
+
+

@@ -9,7 +9,7 @@ school_growth_percentile(.data, student_column = "studentid",
   rit_column = "testritscore", term_column = "termname",
   dl_indicator = "iep", ell_indicator = "iep",
   school_indicator = "schoolname", growth_season = "SS",
-  truncate_growth = TRUE)
+  truncate_growth = TRUE, fall_equate_scores = NULL)
 }
 \arguments{
 \item{.data}{a long format (i.e., combined) Comprehensive Data File}
@@ -35,6 +35,11 @@ respect to subject and term}
 
 \item{truncate_growth}{whether or not to truncate student growth at 1st and 99th percentiles
 Default is `TRUE`}
+
+\item{fall_equate_scores}{a data.frame of fall MAP results with columns `studentid`,
+`measurementscale`, `testritscore`, and `grade`.  These data are used to
+equate missing pre-test (i.e., prior-spring) RIT scores per CPS
+guidelines.}
 }
 \value{
 list with three data frames attached

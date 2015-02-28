@@ -41,12 +41,15 @@ test_that("school_growth_percentiile fails gracefully", {
                 "You must have exactly two test terms")
   expect_error(school_growth_percentile(cdf),
                "Your data contains subjects besides Reading and Mathematics.")
-    
+  
+  expect_warning(school_growth_percentile(cdf_filtered),
+               "our data currently has 202 student-subject pairs")
+  
 })
 
 test_that("school_growth_percentiile produces proper output", {
-  expect_equal(length(school_growth), 3)
-  expect_equal(names(school_growth), c("student_level", "grade_level", "school_level"))
+  expect_equal(length(school_growth), 4)
+  expect_equal(names(school_growth), c("original_data", "student_level", "grade_level", "school_level"))
   expect_equal(nrow(school_growth$student_level), 1345)
   expect_equal(nrow(school_growth$grade_level), 12)
   expect_equal(nrow(school_growth$school_level), 6)

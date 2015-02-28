@@ -42,8 +42,9 @@ equate missing pre-test (i.e., prior-spring) RIT scores per CPS
 guidelines.}
 }
 \value{
-list with three data frames attached
+list with four data frames attached
 showing student-, grade-, and school-level growth percentiles
+as well as the original data.
 }
 \description{
 \code{school_growth_percentile} is the workhourse function

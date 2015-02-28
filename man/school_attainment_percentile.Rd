@@ -34,7 +34,7 @@ respect to subject and term}
 \item{school_indicator}{column that identifies school}
 }
 \value{
-list with three data frames attached
+list with four data frames attached
 }
 \description{
 \code{school_attainment_percentile} is a workhourse function

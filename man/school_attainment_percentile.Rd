@@ -2,7 +2,7 @@
 % Please edit documentation in R/school_attainment_percentile.R
 \name{school_attainment_percentile}
 \alias{school_attainment_percentile}
-\title{Calculate gorwth percenitle}
+\title{Calculate school growth percentiles}
 \usage{
 school_attainment_percentile(.data, student_column = "studentid",
   grade_column = "grade", subject_column = "measurementscale",

@@ -1,4 +1,4 @@
-#' @title Calculate gorwth percenitle
+#' @title Calculate school growth percentiles
 #'
 #' @description \code{school_attainment_percentile} is a workhourse function
 #' that calculates school attainment percentiles

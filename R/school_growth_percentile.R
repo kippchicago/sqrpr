@@ -269,9 +269,9 @@ collapse_grade_to_school <- function(.data){
               avg_rit_start=weighted.mean(avg_rit_start, N_students),
               avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
               typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1),
-              N_students=sum(N_students), 
+              N=sum(N_students), 
               N_met=sum(N_met),
-              pct_met=round(N_met/N_students,2)
+              pct_met=round(N_met/N,2)
               ) %>% 
     dplyr::inner_join(dplyr::filter(cps_constants, 
                                     variable=="sd_growth") %>%

@@ -112,7 +112,8 @@ school_growth_percentile <- function(.data,
                                       typical_growth=T22,
                                       reported_growth=R22,
                                       std_dev_growth=S22
-                                      ), 
+                                      ) %>%
+                        mutate(grade_start=as.numeric(grade_start)), 
                       by=c("measurementscale",
                            "grade_start",
                            "testritscore_start")
@@ -153,8 +154,9 @@ school_growth_percentile <- function(.data,
                     fallwinterspring_end) %>%
     dplyr::summarize(N_students=n(),
                      avg_rit_start = round(mean(testritscore_start),1),
-                     avg_rit_end = round(mean(testritscore_final),1)
-                     ) %>%
+                     avg_rit_end = round(mean(testritscore_final),1),
+                     N_met=sum(met_typical),
+                     pct_met=round(N_met/N_students,2)) %>%
     dplyr::inner_join(nwea_cps_school_level_norms %>%
                  select(measurementscale,
                         grade_end,
@@ -264,10 +266,12 @@ collapse_grade_to_school <- function(.data){
     dplyr::group_by(school, measurementscale) %>%
     dplyr::summarize(
               grades_served=paste(unique(grade_end), collapse=" "),
-              N=sum(N_students), 
               avg_rit_start=weighted.mean(avg_rit_start, N_students),
               avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
-              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1)
+              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1),
+              N_students=sum(N_students), 
+              N_met=sum(N_met),
+              pct_met=round(N_met/N_students,2)
               ) %>% 
     dplyr::inner_join(dplyr::filter(cps_constants, 
                                     variable=="sd_growth") %>%
@@ -331,7 +335,8 @@ equate_fall_to_spring <- function(growth_data=map_matched,
     dplyr::mutate(test_rit_score_equated=cps_equate(rit_score = testritscore_fall,
                                              subject=measurementscale,
                                               grade_level=grade_end),
-                  testritscore_equated=round(test_rit_score_equated))
+                  testritscore_equated=round(test_rit_score_equated)
+                  )
   
   
   out<-growth_data %>%
@@ -342,9 +347,12 @@ equate_fall_to_spring <- function(growth_data=map_matched,
                      by=c("studentid", 
                           "measurementscale")) %>%
     dplyr::mutate(equated=!is.na(testritscore_equated),
-           testritscore_start=ifelse(equated,
-                                     testritscore_equated,
-                                     testritscore_start)
+                  testritscore_start=ifelse(equated,
+                                            testritscore_equated,
+                                            testritscore_start),
+                  grade_start=ifelse(equated, grade_end-1, grade_start),
+                  fallwinterspring_start="Spring"
+           
            ) %>%
     dplyr::select(-testritscore_equated)
     

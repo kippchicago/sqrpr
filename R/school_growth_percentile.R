@@ -21,6 +21,8 @@
 #' equate missing pre-test (i.e., prior-spring) RIT scores per CPS 
 #' guidelines.
 #' 
+#' @export
+#' 
 #' @return  list with four data frames attached
 #' showing student-, grade-, and school-level growth percentiles 
 #' as well as the original data. 
@@ -82,7 +84,7 @@ school_growth_percentile <- function(.data,
   
   cols_reorderd<-c(non_seasons_cols, start_cols, end_cols)
   
-  map_matched <- map_matched[,cols_reorderd]
+  map_matched <- map_matched[,cols_reorderd] 
   
   # Equating bit
   if(missing(fall_equate_scores)){
@@ -122,7 +124,8 @@ school_growth_percentile <- function(.data,
                   met_typical=growth>=typical_growth,
                   cgi=(growth-typical_growth)/std_dev_growth,
                   growth_pctl=pnorm(cgi)
-                  )
+                  ) %>%
+    dplyr::filter(grade_start!=grade_end)
   
   
   if(truncate_growth){
@@ -266,7 +269,7 @@ collapse_grade_to_school <- function(.data){
     dplyr::group_by(school, measurementscale) %>%
     dplyr::summarize(
               grades_served=paste(unique(grade_end), collapse=" "),
-              avg_rit_start=weighted.mean(avg_rit_start, N_students),
+              avg_rit_start=round(weighted.mean(avg_rit_start, N_students),1),
               avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
               typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1),
               N=sum(N_students), 

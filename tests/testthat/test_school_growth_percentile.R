@@ -93,7 +93,7 @@ test_that("collapse_grade_to_school() collapses everthing just fine" ,{
     arrange(grades_served, school, measurementscale)
   
   expect_equal(nrow(collapsed), 6)
-  expect_equal(ncol(collapsed), 11)
+  expect_equal(ncol(collapsed), 13)
   # reading
   expect_equal(as.numeric(collapsed[1,"growth_pctl"]), 0.93)
   expect_equal(as.numeric(collapsed[2,"growth_pctl"]), 0.86)

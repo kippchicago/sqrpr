@@ -108,7 +108,7 @@ school_growth_percentile <- function(.data,
   
   map_matched <- map_matched %>%
     dplyr::inner_join(norms_students_2011 %>% 
-                        plyr::select(measurementscale=MeasurementScale,
+                        dplyr::select(measurementscale=MeasurementScale,
                                       grade_start=StartGrade,
                                       testritscore_start=StartRIT,
                                       typical_growth=T22,

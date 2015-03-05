@@ -1,4 +1,4 @@
-# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
+# .travis.yml for sprpr
 
 language: c
 
@@ -10,6 +10,7 @@ before_install:
 install:
   - ./travis-tool.sh install_deps
   - ./travis-tool.sh github_package jimhester/covr
+  - ./travis-tool.sh github_package almartin82/mapvizieR
 
 script: ./travis-tool.sh run_tests
 

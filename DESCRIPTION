@@ -19,6 +19,7 @@ Imports:
     assertthat,
     ensurer,
     stringr,
-    plyr
+    plyr,
+    mapvizieR
 Suggests: 
     testthat

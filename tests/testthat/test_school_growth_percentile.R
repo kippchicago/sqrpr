@@ -30,12 +30,12 @@ cdf_fall_filtered_equate<-cdf_fall_filtered %>%
   mutate(equated_rit=cps_equate(testritscore, 
                                 measurementscale, 
                                 grade
-  )
+                                )
   )
 
 school_growth <- school_growth_percentile(cdf_filtered) 
 
-test_that("school_growth_percentiile fails gracefully", {
+test_that("school_growth_percentile fails gracefully", {
 
   expect_error(school_growth_percentile(cdf_fall_filtered),
                 "You must have exactly two test terms")
@@ -60,7 +60,7 @@ test_that("school_growth_percentiile produces proper output", {
                0.615)
 })
 
-test_that("school_growth_percentile() figures proper school level perentiles" ,{
+test_that("school_growth_percentile() figures proper school level percentiles" ,{
   est_pctls<-school_growth$grade_level %>% 
     ungroup %>%
     select(measurementscale, 

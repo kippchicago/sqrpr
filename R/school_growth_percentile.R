@@ -337,8 +337,15 @@ equate_fall_to_spring <- function(growth_data=map_matched,
                    "measurementscale")) %>%
     dplyr::mutate(test_rit_score_equated=cps_equate(rit_score = testritscore_fall,
                                              subject=measurementscale,
-                                              grade_level=grade_end),
-                  testritscore_equated=round(test_rit_score_equated)
+                                              grade_level=grade_end 
+                                             ),
+                  testritscore_equated=round(test_rit_score_equated),
+                  season="Spring",
+                  testpercentile_equated=get_test_percentile(measurementscale=measurementscale,
+                                                              season=season,
+                                                              grade_level=grade_fall-1,
+                                                              ritscore=testritscore_equated
+                                                              )
                   )
   
   
@@ -346,25 +353,62 @@ equate_fall_to_spring <- function(growth_data=map_matched,
     dplyr::left_join(matched %>% 
                        select(studentid, 
                               measurementscale,
-                              testritscore_equated),
+                              testritscore_equated,
+                              testpercentile_equated),
                      by=c("studentid", 
                           "measurementscale")) %>%
     dplyr::mutate(equated=!is.na(testritscore_equated),
                   testritscore_start=ifelse(equated,
                                             testritscore_equated,
                                             testritscore_start),
+                  testpercentile_start=ifelse(equated,
+                                              testpercentile_equated,
+                                              testpercentile_start),
                   grade_start=ifelse(equated, grade_end-1, grade_start),
                   fallwinterspring_start="Spring"
            
            ) %>%
-    dplyr::select(-testritscore_equated)
+    dplyr::select(-testritscore_equated, -testpercentile_equated)
     
   
   # return
   out
   
-  
 }
 
+
+#' @title Finds student national percentile rank 
+#'
+#' @description \code{get_test_percentile} looks up a student's national 
+#' percentile rank from \code{\link{student_status_norms_2011_dense_extended}}.
+#'
+#' @param measurementscale the test subject.
+#' @param season the test season, which is one of "Fall", "Winter", or "Spring".
+#' @param grade_level the grade level at the time of the assessment
+#' @param ritscore the test RIT score for which you want to know the test percentile. 
+#' 
+#' @return an integer vector
+#' 
+get_test_percentile <- function(measurementscale, season, grade_level, ritscore){
+  x<-data.frame(measurementscale=measurementscale, 
+                fallwinterspring=season,
+                grade=grade_level,
+                RIT=ritscore)
+  joined <- dplyr::left_join(x, 
+                             student_status_norms_2011,
+                             by=c("measurementscale",
+                                  "fallwinterspring",
+                                  "grade",
+                                  "RIT")
+  ) %>%
+    dplyr::group_by(measurementscale, fallwinterspring, grade, RIT) %>%
+    ungroup %>% 
+    dplyr::select(percentile) %>% 
+    unlist %>%
+    as.integer
+  
+  # return
+  joined
+}
 
 

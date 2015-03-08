@@ -1,4 +1,5 @@
-#' @title Calculate gorwth percenitle
+#' @title Calculate growth percenitle
+#' 
 #'
 #' @description \code{school_growth_percentile} is the workhourse function
 #' that calculates school growth percentiles
@@ -261,37 +262,43 @@ collapse_grade_to_school <- function(.data){
   
   #multi grade schools 
   multi_grade_schools <- skeleton %>% 
-    dplyr::filter(n_grades>1) %>%
-    dplyr::select(school_end, measurementscale) %>%
-    dplyr::inner_join(est_pctls,
-               by=c("school_end", "measurementscale")) %>%
-    dplyr::rename(school=school_end) %>% 
-    dplyr::group_by(school, measurementscale) %>%
-    dplyr::summarize(
-              grades_served=paste(unique(grade_end), collapse=" "),
-              avg_rit_start=round(weighted.mean(avg_rit_start, N_students),1),
-              avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
-              typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1),
-              N=sum(N_students), 
-              N_met=sum(N_met),
-              pct_met=round(N_met/N,2)
-              ) %>% 
-    dplyr::inner_join(dplyr::filter(cps_constants, 
-                                    variable=="sd_growth") %>%
-                        dplyr::select(
-                          measurementscale,
-                          sd_growth=value),
-                      by="measurementscale"
+    dplyr::filter(n_grades>1) 
+  if(nrow(multi_grade_schools)>0) {
+    
+    multi_grade_schools <- multi_grade_schools %>%
+      dplyr::select(school_end, measurementscale) %>%
+      dplyr::inner_join(est_pctls,
+                        by=c("school_end", "measurementscale")) %>%
+      dplyr::rename(school=school_end) %>% 
+      dplyr::group_by(school, measurementscale) %>%
+      dplyr::summarize(
+        grades_served=paste(unique(grade_end), collapse=" "),
+        avg_rit_start=round(weighted.mean(avg_rit_start, N_students),1),
+        avg_rit_end=plyr::round_any(weighted.mean(avg_rit_end, N_students), 0.1, ceiling),
+        typical_growth_mean=round(weighted.mean(typical_growth_mean, N_students), 1),
+        N=sum(N_students), 
+        N_met=sum(N_met),
+        pct_met=round(N_met/N,2)
+      ) %>% 
+      dplyr::inner_join(dplyr::filter(cps_constants, 
+                                      variable=="sd_growth") %>%
+                          dplyr::select(
+                            measurementscale,
+                            sd_growth=value),
+                        by="measurementscale"
       ) %>%
-    dplyr::mutate(growth=avg_rit_end-avg_rit_start,
-           z_score=round(growth-typical_growth_mean,1)/sd_growth,
-           growth_pctl = round(pnorm(z_score),2),
-           growth_pctl = ifelse(growth_pctl>.99, .99, growth_pctl),
-           growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl)
-    )
-  
-  stacked <- dplyr::rbind_list(multi_grade_schools,
-                      single_grade_schools)
+      dplyr::mutate(growth=avg_rit_end-avg_rit_start,
+                    z_score=round(growth-typical_growth_mean,1)/sd_growth,
+                    growth_pctl = round(pnorm(z_score),2),
+                    growth_pctl = ifelse(growth_pctl>.99, .99, growth_pctl),
+                    growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl)
+      )
+    
+    stacked <- dplyr::rbind_list(multi_grade_schools,
+                                 single_grade_schools)
+  }  else {
+    stacked <- single_grade_schools
+  }
   
   # return
   stacked

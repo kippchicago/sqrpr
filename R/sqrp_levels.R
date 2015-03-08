@@ -408,8 +408,19 @@ sqrp_level<-function(school_name="Ascend",
   # get MAP related measures
   growth<-growth$school_level %>% filter_(filter_arg)
   attain<-attain$school_level %>% filter_(filter_arg)
-  growth_pg_aa<-growth_pg_aa$school_level %>% filter_(filter_arg)
-  growth_pg_iep<-growth_pg_iep$school_level %>% filter_(filter_arg)
+  
+  if(is.null(growth_pg_aa$school_level)){
+    growth_pg_aa <- NULL
+  } else {
+    growth_pg_aa<-growth_pg_aa$school_level %>% filter_(filter_arg)
+  }
+  
+  if(is.null(growth_pg_iep$school_level)){
+    growth_pg_iep <- NULL
+  } else{
+    growth_pg_iep<-growth_pg_iep$school_level %>% filter_(filter_arg)
+  }
+  
   pct_me<-pct_me %>% filter_(filter_arg)
   
   # calculate pionts 
@@ -425,37 +436,52 @@ sqrp_level<-function(school_name="Ascend",
     as.numeric %>%
     calc_growth_points
   
-  gp_aa_r<-growth_pg_aa %>% 
-    filter(measurementscale=="Reading") %>% 
-    select(growth_pctl) %>% 
-    as.numeric %>%
-    calc_priority_growth_points
+  if(is.null(growth_pg_aa)) {
+    gp_aa_r <- NULL
+    gp_aa_m <- NULL
+  } else {
+    gp_aa_r<-growth_pg_aa %>% 
+      filter(measurementscale=="Reading") %>% 
+      select(growth_pctl) %>% 
+      as.numeric %>%
+      calc_priority_growth_points
+    
+    if(is.na(gp_aa_r)) gp_aa_r<-NULL
+    
+    gp_aa_m<-growth_pg_aa %>% 
+      filter(measurementscale=="Mathematics") %>% 
+      select(growth_pctl) %>%
+      as.numeric %>%
+      calc_priority_growth_points
+    
+    if(is.na(gp_aa_m)) gp_aa_m<-NULL  
+    
+  }
+    
   
-  if(is.na(gp_aa_r)) gp_aa_r<-NULL
   
-  gp_dl_r <- growth_pg_iep %>% 
-    filter(measurementscale=="Reading") %>% 
-    select(growth_pctl) %>%
-    as.numeric %>%
-    calc_priority_growth_points
   
-  if(is.na(gp_dl_r)) gp_dl_r<-NULL
-  
-  gp_aa_m<-growth_pg_aa %>% 
-    filter(measurementscale=="Mathematics") %>% 
-    select(growth_pctl) %>%
-    as.numeric %>%
-    calc_priority_growth_points
-  
-  if(is.na(gp_aa_m)) gp_aa_m<-NULL
-  
-  gp_dl_m<-growth_pg_iep %>% 
-    filter(measurementscale=="Mathematics") %>% 
-    select(growth_pctl) %>%
-    as.numeric %>%
-    calc_priority_growth_points
-  
-  if(is.na(gp_dl_m)) gp_dl_m<-NULL
+  if(is.null(growth_pg_iep)){
+    gp_dl_r <- NULL
+    gp_dl_m <- NULL
+  } else {
+    gp_dl_r <- growth_pg_iep %>% 
+      filter(measurementscale=="Reading") %>% 
+      select(growth_pctl) %>%
+      as.numeric %>%
+      calc_priority_growth_points  
+    
+    if(is.na(gp_dl_r)) gp_dl_r<-NULL
+    
+    gp_dl_m<-growth_pg_iep %>% 
+      filter(measurementscale=="Mathematics") %>% 
+      select(growth_pctl) %>%
+      as.numeric %>%
+      calc_priority_growth_points
+    
+    if(is.na(gp_dl_m)) gp_dl_m<-NULL
+    
+  }
   
   pct_me <- pct_me$pct_met %>%
     as.numeric %>%
@@ -547,4 +573,5 @@ sqrp_level<-function(school_name="Ascend",
   out
   
 }
+
 

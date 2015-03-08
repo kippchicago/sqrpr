@@ -40,7 +40,10 @@ priority_group.sqrp_growth<-function(sqrp_obj,
                          group_id,
                          ...) {
 
-                          
+  if(group_column %>% is.null) {
+    out <- NULL
+    return(out)
+  }
   #create _ends tag
   end_tag<-"_end"
   
@@ -72,21 +75,23 @@ priority_group.sqrp_growth<-function(sqrp_obj,
                       ) %>%
     dplyr::filter_(filter_arg2)
   
-  
-  #build function arguments
-  args_list <- list(.data=masked_data,
-                    school_indicator="school",
-                   ...
-                    )
-  
-  #run data through function 
-  out<-do.call(school_growth_percentile, args_list)
-                
-  
-  class(out)<-c("priority_group_growth", class(out))
-  
-  
-  #return
+  if(nrow(masked_data)>0) {
+    #build function arguments
+    args_list <- list(.data=masked_data,
+                      school_indicator="school",
+                      ...
+    )
+    
+    #run data through function 
+    out<-do.call(school_growth_percentile, args_list)
+    
+    
+    class(out)<-c("priority_group_growth", class(out))
+
+  } else {
+    out<-NULL
+  }
+    #return
   out
   
   }

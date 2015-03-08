@@ -166,3 +166,100 @@ project_s2s<-function(.data, student_column = "studentid",
   out
 }
 
+simulate_once_sqrp_data <- function(spring_pretest_cdf,
+                          fall_equate_cdf=NULL,
+                          school="Asend",
+                          pct_cr,
+                          aa= list(aa_col="studentethnicgroup",
+                                   aa_ind="Black or African American"),
+                          iep = list(iep_col="sped", 
+                                     iep_ind=TRUE),
+                          ...) {
+  
+  
+  # build filter argument
+  
+  spring_cdf<-spring_pretest_cdf %>%
+    dplyr::filter(grepl(school, schoolname))
+  
+  if(!missing(fall_equate_cdf)&!is.null(fall_equate_cdf)){
+    
+    fall_cdf<-fall_equate_cdf %>%
+      dplyr::filter(grepl(school, schoolname))
+    
+    projected<-project_s2s(.data = spring_cdf,
+                           fall_equate_scores = fall_cdf,
+                           percent_cr = pct_cr )
+  } else {
+    projected<-project_s2s(.data = spring_cdf,
+                           percent_cr = pct_cr )
+  }
+  
+  growth<-school_growth_percentile(projected)
+  
+  attain <- projected %>%
+    dplyr::filter(fallwinterspring=="Spring",
+                  map_year_academic==max(map_year_academic)) %>%
+    school_attainment_percentile
+  
+ if(!missing(aa)){
+   growth_aa<-priority_group(growth, 
+                             group_column = "studentethnicgroup",
+                             group_id = "Black or African American")
+ }  else {
+   growth_aa<-NULL
+ }
+  
+ if(!missing(aa)){
+   growth_iep<-priority_group(growth, 
+                              group_column = iep$iep_col,
+                              group_id = iep$iep_ind)
+   
+ }  else {
+   growth_iep<-NULL
+ }
+  
+  
+  pct_me<-calc_pct_me(growth = growth)
+  
+  args_list <- list(school_name=school,
+                    growth=growth,
+                    attain=attain,
+                    growth_pg_aa=growth_aa,
+                    growth_pg_iep=growth_iep,
+                    pct_me=pct_me,
+                    ...)
+  
+  level<-do.call(sqrp_level,
+                 args_list)
+  
+  # return
+  level
+  
+}
+
+simulate_sqrp<-function(spring_pretest_cdf,
+                        fall_equate_cdf=NULL,
+                        school="Asend",
+                        pct_cr,
+                        aa= list(aa_col="studentethnicgroup",
+                                 aa_ind="Black or African American"),
+                        iep = list(iep_col="sped", 
+                                   iep_ind=TRUE),
+                        ..., 
+                        n_sims=10){
+  
+  args_list <- c(as.list(environment()), list(...))
+  
+  args_list[["n_sims"]]<-NULL
+  
+  out<-data.frame
+  
+  for(i in 1:n_sims){
+    sims<-do.call(simulate_once_sqrp_data,args_list)
+    
+    out<-rbind_list(out, sims)  
+  }
+  
+  out
+}

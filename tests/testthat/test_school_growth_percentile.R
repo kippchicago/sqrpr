@@ -111,6 +111,8 @@ test_that("school_growth_equated works when passing fall scores", {
            growth_pctl) %>%
     arrange(desc(measurementscale),grade_end, avg_rit_start)
   
+  expect_equal(sum(school_growth_equated$student_level$equated), 204)
+  
   # reading
   expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.99)
   expect_equal(as.numeric(est_pctls[2,"growth_pctl"]), 0.01)

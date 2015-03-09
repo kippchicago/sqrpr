@@ -85,9 +85,17 @@ test_that("school_growth_percentile() figures proper school level percentiles" ,
 })
 
 test_that("collapse_grade_to_school() collapses everthing just fine" ,{
+    
+  #multi grade schools
   est_pctls<-school_growth$grade_level
   collapsed <- collapse_grade_to_school(est_pctls) %>%
     arrange(grades_served, school, measurementscale)
+  
+  # single grade schools
+  est_pctls_single_grade<-school_growth$grade_level %>% filter(grade_end==5)
+  collapsed_single_grade <- collapse_grade_to_school(est_pctls_single_grade) %>%
+    arrange(grades_served, school, measurementscale)
+  
   
   expect_equal(nrow(collapsed), 6)
   expect_equal(ncol(collapsed), 13)
@@ -98,6 +106,13 @@ test_that("collapse_grade_to_school() collapses everthing just fine" ,{
   expect_equal(as.numeric(collapsed[4,"growth_pctl"]), 0.01)
   expect_equal(as.numeric(collapsed[5,"growth_pctl"]), 0.97)
   expect_equal(as.numeric(collapsed[6,"growth_pctl"]), 0.06)
+  
+  
+  # single grade schools 
+  expect_equal(as.numeric(collapsed_single_grade[[1,"growth_pctl"]]), 0.86)
+  expect_equal(as.numeric(collapsed_single_grade[[2,"growth_pctl"]]), 0.01)
+  expect_equal(as.numeric(collapsed_single_grade[[3,"growth_pctl"]]), 0.99)
+  expect_equal(as.numeric(collapsed_single_grade[[4,"growth_pctl"]]), 0.01)
   
 })
 
@@ -130,6 +145,7 @@ test_that("school_growth_equated works when passing fall scores", {
   expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.99)
   
 })
+
 
 
 

@@ -117,10 +117,46 @@ calc_sqrp_points <- function(school_growth_pctl_reading=NULL,
     dplyr::group_by(category) %>% 
     dplyr::summarize(addl_weight=sum(weight))
   
+  if("school_growth_pctl" %in% missing_cats$reallocate_to){
+    
+    # create growth reallocations table
+    growth_reallocs<-data.frame(reallocate_from=c(rep("pct_sufficient_access_progress",2),
+                                                  rep("ada",2),
+                                                  rep("mvms_5essentials",2),
+                                                  rep("dqi",2)),
+                                reallocate_to=rep(c("school_growth_pctl_reading",
+                                                    "school_growth_pctl_mathematics"),
+                                                  4),
+                                stringsAsFactors = FALSE
+    )
+    
+    # filter to missing GROWTH reallocations
+    add_weights2<-missing_cats %>%
+      dplyr::filter(reallocate_to=="school_growth_pctl") %>%
+      dplyr::inner_join(growth_reallocs, 
+                        by=c("category"="reallocate_from")) %>%
+      dplyr::select(category=reallocate_to.y,
+                    weight) %>%
+      dplyr::mutate(weight=weight/2) %>%
+      dplyr::group_by(category) %>%
+      dplyr::summarize(addl_weight=sum(weight))
+    
+    add_weights<-rbind_list(add_weights, add_weights2) %>%
+      dplyr::filter(category!="school_growth_pctl") %>% 
+      dplyr::group_by(category) %>%
+      dplyr::summarise(addl_weight=sum(addl_weight))
+    
+  }
+  
   reweighted <- args_df %>%
     dplyr::left_join(add_weights, 
                       by="category")
+  
+  
     
+  
+  
+  
   sqrp_points<-reweighted %>% 
     dplyr::mutate(new_weight=ifelse(is.na(addl_weight), weight, weight+addl_weight),
            weighted_points=sqrp_points*new_weight) %>%

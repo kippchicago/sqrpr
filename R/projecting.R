@@ -160,8 +160,7 @@ project_s2s<-function(.data, student_column = "studentid",
          )
   
   out<-dplyr::rbind_list(map_df, map_df_s2) %>%
-    rename(schoolname=school) %>%
-    select(-schoolname.y)
+    rename(schoolname=school) 
   
   out
 }

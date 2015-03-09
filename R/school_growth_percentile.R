@@ -396,6 +396,8 @@ equate_fall_to_spring <- function(growth_data=map_matched,
 #' 
 #' @return an integer vector
 #' 
+#' @export
+#' 
 get_test_percentile <- function(measurementscale, season, grade_level, ritscore){
   x<-data.frame(measurementscale=measurementscale, 
                 fallwinterspring=season,

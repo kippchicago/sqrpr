@@ -166,9 +166,30 @@ project_s2s<-function(.data, student_column = "studentid",
   out
 }
 
+
+#' @title Produce one iteration of SQRP simulation
+#'
+#' @description \code{simulate_once_sqrp_data} produces a single iteration
+#' of \code{\link{simulate_sqrp}}.  Essentially it is a building block function.
+#' @param spring_pretest_cdf single season pret-test, spring cdf
+#' @param fall_equate_cdf single season fall cdf used to equate missing scores
+#' @param school character providing a part of the name of the school in 
+#' \code{spring_test_cdf} for which to provide simulations,
+#' @param pct_cr percent of students that should make exactly KIPP 
+#' Tiered college ready growth
+#' @param aa a list with two elements: \code{aa_col} and \code{aa_ind},
+#' which are use to id columns for priority group calculations
+#' @param iep a list with two elements: \code{iep_col} and \code{iep_ind},
+#' which are use to id columns for priority group calculations
+#' @param ... arguments passed to \code{\link{sqrp_level}}
+#' @export
+#' 
+#' @return  a data.frame with SQRP points and levels
+#' 
+
 simulate_once_sqrp_data <- function(spring_pretest_cdf,
                           fall_equate_cdf=NULL,
-                          school="Asend",
+                          school="Ascend",
                           pct_cr,
                           aa= list(aa_col="studentethnicgroup",
                                    aa_ind="Black or African American"),
@@ -237,6 +258,21 @@ simulate_once_sqrp_data <- function(spring_pretest_cdf,
   level
   
 }
+
+
+
+#' @title Simulations of projected SQRP points and levels 
+#'
+#' @description \code{simulate_sqrp} runs simulation for SQRP proejctions.
+#' 
+#' @inheritParams simulate_once_sqrp_data
+#' @param n_sims the number of simulations to run
+
+#' @export
+#' 
+#' @return  a data.frame with SQRP points and levels with 
+#' \code{nrow(n_sims)}
+#' 
 
 simulate_sqrp<-function(spring_pretest_cdf,
                         fall_equate_cdf=NULL,

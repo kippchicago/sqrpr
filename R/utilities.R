@@ -7,6 +7,8 @@
 #' 
 #' @return data frame with disambiguated termname and map_year_academic
 #' 
+#' @export
+ 
 extract_academic_year <- function(x) {
   
   prep1 <- do.call(

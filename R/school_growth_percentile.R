@@ -214,6 +214,7 @@ school_growth_percentile <- function(.data,
 #' 
 #' @return vector of RIT scores equivilent to specified growth percentile
 #' 
+#' @export
 truncated_growth <- function(truncation_percentile=.99, 
                             typical_growth,
                             sd_growth,
@@ -234,6 +235,8 @@ truncated_growth <- function(truncation_percentile=.99,
 #' @param .data data passed to function 
 #' 
 #' @return data.frame 
+#' 
+#' @export
 #' 
 collapse_grade_to_school <- function(.data){
   # create skeleton that properly accounts for number of grades.  If 
@@ -321,6 +324,7 @@ collapse_grade_to_school <- function(.data){
 #' @return data.frame with `nrow(growth_data)` rows and 
 #' `ncol(growth_data) + 1` columns
 #' 
+#' @export
 equate_fall_to_spring <- function(growth_data=map_matched, 
                                   fall_data=NA){
   

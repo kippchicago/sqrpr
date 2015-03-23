@@ -17,6 +17,8 @@
 #' @param school_indicator column that identifies school
 #' 
 #' @return  list with four data frames attached
+#' 
+#' @export
 school_attainment_percentile <- function(.data, 
                                          student_column="studentid",
                                          grade_column="grade", 

@@ -107,28 +107,54 @@ school_growth_percentile <-  function(.data,
     map_matched <- equate_fall_to_spring(map_matched,
                                          fall_equate_scores %>%
                                            ensure_fall_data)
+    
+    season1<-"Spring"
+  }
+
+  
+  if(season1=="Fall"){
+    map_matched <- map_matched %>%
+      dplyr::inner_join(norms_students_2011 %>% 
+                          dplyr::select(measurementscale=MeasurementScale,
+                                        grade_start=StartGrade,
+                                        testritscore_start=StartRIT,
+                                        typical_growth=T42,
+                                        reported_growth=R42,
+                                        std_dev_growth=S42
+                          ) %>%
+                          mutate(grade_start=as.numeric(grade_start)), 
+                        by=c("measurementscale",
+                             "grade_start",
+                             "testritscore_start")
+      ) %>%
+      dplyr::mutate(growth=testritscore_end-testritscore_start,
+                    met_typical=growth>=typical_growth,
+                    cgi=(growth-typical_growth)/std_dev_growth,
+                    growth_pctl=pnorm(cgi)
+      ) 
+  } else {
+    map_matched <- map_matched %>%
+      dplyr::inner_join(norms_students_2011 %>% 
+                          dplyr::select(measurementscale=MeasurementScale,
+                                        grade_start=StartGrade,
+                                        testritscore_start=StartRIT,
+                                        typical_growth=T22,
+                                        reported_growth=R22,
+                                        std_dev_growth=S22
+                          ) %>%
+                          mutate(grade_start=as.numeric(grade_start)), 
+                        by=c("measurementscale",
+                             "grade_start",
+                             "testritscore_start")
+      ) %>%
+      dplyr::mutate(growth=testritscore_end-testritscore_start,
+                    met_typical=growth>=typical_growth,
+                    cgi=(growth-typical_growth)/std_dev_growth,
+                    growth_pctl=pnorm(cgi)
+      ) %>%
+      dplyr::filter(grade_start!=grade_end)  
   }
   
-  map_matched <- map_matched %>%
-    dplyr::inner_join(norms_students_2011 %>% 
-                        dplyr::select(measurementscale=MeasurementScale,
-                                      grade_start=StartGrade,
-                                      testritscore_start=StartRIT,
-                                      typical_growth=T22,
-                                      reported_growth=R22,
-                                      std_dev_growth=S22
-                                      ) %>%
-                        mutate(grade_start=as.numeric(grade_start)), 
-                      by=c("measurementscale",
-                           "grade_start",
-                           "testritscore_start")
-    ) %>%
-    dplyr::mutate(growth=testritscore_end-testritscore_start,
-                  met_typical=growth>=typical_growth,
-                  cgi=(growth-typical_growth)/std_dev_growth,
-                  growth_pctl=pnorm(cgi)
-                  ) %>%
-    dplyr::filter(grade_start!=grade_end)
   
   
   if(truncate_growth){
@@ -209,6 +235,7 @@ print.sqrp_growth <-function(x, ...){
     dplyr::select_("School"="school",
            "Subject"="measurementscale",
            "Grades"="grades_served",
+           "N",
            "Growth Pctl"="growth_pctl",
            "Pct M/E Typcial Growth" = "pct_met") %>%
     as.data.frame

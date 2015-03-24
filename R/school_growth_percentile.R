@@ -26,14 +26,13 @@
 #' missing pre-test (i.e., prior-spring) RIT scores per CPS guidelines. IF `TRUE` is passed, then all fall scores
 #' are equated to the prior spring
 #' 
-#' @export
 #' 
 #' @return  list with four data frames attached
 #' showing student-, grade-, and school-level growth percentiles 
 #' as well as the original data. 
-#' 
-
-school_growth_percentile <- function(.data, 
+#'
+#' @export  
+school_growth_percentile <-  function(.data, 
                                      student_column="studentid",
                                      grade_column="grade", 
                                      subject_column="measurementscale", 
@@ -202,6 +201,23 @@ school_growth_percentile <- function(.data,
   out
 }
 
+print.sqrp_growth <-function(.growth_data){
+  
+  tbl<-.growth_data$school_level %>%
+    dplyr::select_("School"="school",
+           "Subject"="measurementscale",
+           "Grades"="grades_served",
+           "Growth Pctl"="growth_pctl",
+           "Pct M/E Typcial Growth" = "pct_met") %>%
+    as.data.frame
+  
+  cat("Test message\n")
+  cat("\n")
+  
+  print(tbl, row.names=FALSE)
+  
+}
+
 
 #' @title Calculate truncated growth
 #'
@@ -228,6 +244,8 @@ truncated_growth <- function(truncation_percentile=.99,
              sd=sd_growth)
   round(growth + start_rit)
 }
+
+
 
 #' @title Calculates school-level (i.e, cohort) growth percentiles a la CPS's SQRP
 #'

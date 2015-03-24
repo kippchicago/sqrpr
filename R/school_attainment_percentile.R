@@ -78,6 +78,25 @@ school_attainment_percentile <- function(.data,
 
 }
 
+print.sqrp_attainment <-function(.attain_data){
+  
+  tbl<-.attain_data$school_level %>%
+    dplyr::select_("School"="school",
+                   "Subject"="measurementscale",
+                   "Grades"="grades_served",
+                   "N",
+                   "Attainment Pctl"="attainment_pctl"
+                   ) %>%
+    as.data.frame
+  
+  cat("Test message\n")
+  cat("\n")
+  
+  print(tbl, row.names=FALSE)
+  
+}
+
+
 
 #' @title Calculates school-level (i.e, cohort) attainement percentiles a la CPS's SQRP
 #'

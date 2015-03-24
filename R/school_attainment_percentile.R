@@ -79,9 +79,9 @@ school_attainment_percentile <- function(.data,
 }
 
 #' @export
-print.sqrp_attainment <-function(.attain_data){
+print.sqrp_attainment <-function(x, ...){
   
-  tbl<-.attain_data$school_level %>%
+  tbl<-x$school_level %>%
     dplyr::select_("School"="school",
                    "Subject"="measurementscale",
                    "Grades"="grades_served",

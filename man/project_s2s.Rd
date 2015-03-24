@@ -30,10 +30,11 @@ respect to subject and term}
 
 \item{school_indicator}{column that identifies school}
 
-\item{fall_equate_scores}{a data.frame of fall MAP results with columns `studentid`,
-`measurementscale`, `testritscore`, and `grade`.  These data are used to
-equate missing pre-test (i.e., prior-spring) RIT scores per CPS
-guidelines.}
+\item{fall_equate_scores}{either a data.frame of fall MAP results with columns `studentid`,
+`measurementscale`, `testritscore`, and `grade`, or `TRUE` if your equateding all fall scores
+from fall-to-spring map data.  If a data.frame is passed, then these data are used to equate
+missing pre-test (i.e., prior-spring) RIT scores per CPS guidelines. IF `TRUE` is passed, then all fall scores
+are equated to the prior spring}
 
 \item{percent_cr}{percent of students who make excatly KIPP Tiered
 college ready growth.  This parameter is a scalar between in (0,1)

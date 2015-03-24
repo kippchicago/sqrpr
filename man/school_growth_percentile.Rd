@@ -8,8 +8,8 @@ school_growth_percentile(.data, student_column = "studentid",
   grade_column = "grade", subject_column = "measurementscale",
   rit_column = "testritscore", term_column = "termname",
   dl_indicator = "iep", ell_indicator = "iep",
-  school_indicator = "schoolname", growth_season = "SS",
-  truncate_growth = TRUE, fall_equate_scores = NULL)
+  school_indicator = "schoolname", truncate_growth = TRUE,
+  fall_equate_scores = NULL)
 }
 \arguments{
 \item{.data}{a long format (i.e., combined) Comprehensive Data File}
@@ -31,15 +31,14 @@ respect to subject and term}
 
 \item{school_indicator}{column that identifies school}
 
-\item{growth_season}{currenlty not used,}
-
 \item{truncate_growth}{whether or not to truncate student growth at 1st and 99th percentiles
 Default is `TRUE`}
 
-\item{fall_equate_scores}{a data.frame of fall MAP results with columns `studentid`,
-`measurementscale`, `testritscore`, and `grade`.  These data are used to
-equate missing pre-test (i.e., prior-spring) RIT scores per CPS
-guidelines.}
+\item{fall_equate_scores}{either a data.frame of fall MAP results with columns `studentid`,
+`measurementscale`, `testritscore`, and `grade`, or `TRUE` if your equateding all fall scores
+from fall-to-spring map data.  If a data.frame is passed, then these data are used to equate
+missing pre-test (i.e., prior-spring) RIT scores per CPS guidelines. IF `TRUE` is passed, then all fall scores
+are equated to the prior spring}
 }
 \value{
 list with four data frames attached
@@ -48,6 +47,11 @@ as well as the original data.
 }
 \description{
 \code{school_growth_percentile} is the workhourse function
-that calculates school growth percentiles
+that calculates school growth percentiles.
+}
+\details{
+Currently this function (indeed, this package) only supports spring-to-spring calculations.  Since
+CPS will equate your fall scores anyway, this function does support equating fall to prior spring scores. see the
+`fall_equate_score` parameter below for more details.
 }
 

@@ -20,6 +20,6 @@ an integer vector
 }
 \description{
 \code{get_test_percentile} looks up a student's national
-percentile rank from \code{\link{student_status_norms_2011_dense_extended}}.
+percentile rank from \code{\student_status_norms_2011_dense_extended}.
 }
 

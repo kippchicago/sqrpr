@@ -436,7 +436,7 @@ equate_fall_to_spring <- function(growth_data=map_matched,
 #' @title Finds student national percentile rank 
 #'
 #' @description \code{get_test_percentile} looks up a student's national 
-#' percentile rank from \code{\link{student_status_norms_2011_dense_extended}}.
+#' percentile rank from \code{\student_status_norms_2011_dense_extended}.
 #'
 #' @param measurementscale the test subject.
 #' @param season the test season, which is one of "Fall", "Winter", or "Spring".

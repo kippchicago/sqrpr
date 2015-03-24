@@ -38,7 +38,7 @@ are equated to the prior spring}
 
 \item{percent_cr}{percent of students who make excatly KIPP Tiered
 college ready growth.  This parameter is a scalar between in (0,1)
-and is passed to \code{rbinom}'s \code{prob} paramter.}
+and is passed to \code{\link[stats]{rbinom}}'s \code{prob} paramter.}
 }
 \value{
 list with four data frames attached
@@ -62,8 +62,8 @@ and after filtering to the second season to \code{\link{school_attainment_percen
  drawn from \code{\link[stats]{rnorm}} with the mean and sd set by
  for each student the 2011 NWEA MAP student-level norms.
 
- Since CR students are identified \code{rbinom} and
- non CR growth is determeind by \code{rnorm} these
+ Since CR students are identified \code{\link[stats]{rbinom}} and
+ non CR growth is determeind by \code{\link[stats]{rnorm}} these
  project growth of of students is fundametnally stochastic.
  Consequently, this function is best suited for simulating
  growth.

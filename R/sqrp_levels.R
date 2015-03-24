@@ -330,11 +330,13 @@ calc_access_points <- function(pct){
 #' @description \code{calc_5essentials_points} calculates  points given 
 #' 5Essentials Rating
 #' @details `rating` must be a characteer vector with one of the following:
-#' "WO" = Well Organized
-#' "O" = Organized
-#' "MO" = Mostly Organized
-#' "PO" = Partially Organized
-#' "NYO" = Not Yet Organized
+#' \itemize{
+#' \item "WO" = Well Organized
+#' \item "O" = Organized
+#' \item "MO" = Mostly Organized
+#' \item "PO" = Partially Organized
+#' \item "NYO" = Not Yet Organized
+#' }
 #' 
 #' @param rating 5Esstianls rating as character vectors:
 #' 

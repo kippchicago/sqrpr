@@ -201,6 +201,8 @@ school_growth_percentile <-  function(.data,
   out
 }
 
+
+#' @export
 print.sqrp_growth <-function(.growth_data){
   
   tbl<-.growth_data$school_level %>%

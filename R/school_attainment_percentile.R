@@ -78,6 +78,7 @@ school_attainment_percentile <- function(.data,
 
 }
 
+#' @export
 print.sqrp_attainment <-function(.attain_data){
   
   tbl<-.attain_data$school_level %>%

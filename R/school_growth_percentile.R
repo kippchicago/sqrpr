@@ -332,7 +332,7 @@ equate_fall_to_spring <- function(growth_data=map_matched,
                                   fall_data=NA){
   
   
-  fall_first_season <- any(growth_data$fallwinterspring_start=="Fall")
+  fall_first_season <- any(growth_data$fallwinterspring_start=="Fall", na.rm = TRUE)
   
   if(fall_first_season){
     

@@ -407,7 +407,12 @@ equate_fall_to_spring <- function(growth_data=map_matched,
                                                 testpercentile_equated,
                                                 testpercentile_start),
                     grade_start=ifelse(equated, grade_end-1, grade_start),
-                    fallwinterspring_start="Spring"
+                    fallwinterspring_start="Spring",
+                    map_year_academic_start=map_year_academic_end-1,
+                    termname_start=sprintf("%s %s-%s", 
+                                           fallwinterspring_start,
+                                           map_year_academic_start,
+                                           map_year_academic_start+1)
                     
       ) %>%
       dplyr::select(-testritscore_equated, -testpercentile_equated)
@@ -465,7 +470,12 @@ equate_fall_to_spring <- function(growth_data=map_matched,
                                                 testpercentile_equated,
                                                 testpercentile_start),
                     grade_start=ifelse(equated, grade_end-1, grade_start),
-                    fallwinterspring_start="Spring"
+                    fallwinterspring_start="Spring",
+                    map_year_academic_start=map_year_academic_end-1,
+                    termname_start=sprintf("%s %s-%s", 
+                                           fallwinterspring_start,
+                                           map_year_academic_start,
+                                           map_year_academic_start+1)
                     
       ) %>%
       dplyr::select(-testritscore_equated, -testpercentile_equated)

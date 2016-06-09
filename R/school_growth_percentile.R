@@ -65,7 +65,7 @@ school_growth_percentile <-  function(.data,
                               map_year_academic==min(map_year_academic))
 
   map_end <- map_df %>% dplyr::filter(fallwinterspring==season2,
-                              map_year_academic==map_year_academic)
+                              map_year_academic==max(map_year_academic))
 
   map_matched<-dplyr::left_join(map_end,
                          map_start,

@@ -10,16 +10,17 @@ Description: sqrpr provides a set of tools for calculating NWEA MAP based
     the 1st and 99th percentiles, using a CPS specific distribution for
     school-level growth norms, and the 36 week spring-to-spring NWEA growth
     calendar.
-Depends: 
+Depends:
     R (>= 3.1.1),
     dplyr
 License: MIT + file LICENSE
 LazyData: true
-Imports: 
+Imports:
     assertthat,
     ensurer,
     stringr,
     plyr
-Suggests: 
+Suggests:
     testthat,
     mapvizieR
+RoxygenNote: 5.0.1

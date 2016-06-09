@@ -39,14 +39,16 @@ school_attainment <- school_attainment_percentile(cdf_spring14)
 
 test_that("priority_group works with growth data", {
 
-  pg_growth<-priority_group(school_growth,
-                            "studentethnicgroup",
-                            "Hispanic or Latino")
+    expect_warning({
+      pg_growth<-priority_group(school_growth,
+                                "studentethnicgroup",
+                                "Hispanic or Latino")
+    })
 
   expect_equal(names(pg_growth), names(school_growth))
   expect_equal(length(pg_growth), length(school_growth))
   expect_equal(round(mean(pg_growth$school_level$growth_pctl),2),
-               0.68)
+               0.71)
 
 
 
@@ -72,7 +74,7 @@ test_that("priority_group works with attainment data", {
    expect_equal(names(pg_attain), names(school_attainment))
    expect_equal(length(pg_attain), length(school_attainment))
    expect_equal(round(mean(pg_attain$school_level$attainment_pctl),3),
-                0.715)
+                0.685)
 
 
 

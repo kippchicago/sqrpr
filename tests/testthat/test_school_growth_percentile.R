@@ -51,10 +51,10 @@ test_that("school_growth_percentiile produces proper output", {
   expect_equal(nrow(school_growth$grade_level), 12)
   expect_equal(nrow(school_growth$school_level), 6)
   expect_equal(round(mean(school_growth$grade_level$growth_pctl),4),
-               0.5017)
+               0.5692)
 
   expect_equal(round(mean(school_growth$school_level$growth_pctl),3),
-               0.468)
+               0.527)
 })
 
 test_that("school_growth_percentile() figures proper school level percentiles" ,{
@@ -68,20 +68,20 @@ test_that("school_growth_percentile() figures proper school level percentiles" ,
     arrange(desc(measurementscale),grade_end, avg_rit_start)
 
   # reading
-  expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.73)
-  expect_equal(as.numeric(est_pctls[2,"growth_pctl"]), 0.43)
-  expect_equal(as.numeric(est_pctls[3,"growth_pctl"]), 0.07)
-  expect_equal(as.numeric(est_pctls[4,"growth_pctl"]), 0.57)
-  expect_equal(as.numeric(est_pctls[5,"growth_pctl"]), 0.66)
-  expect_equal(as.numeric(est_pctls[6,"growth_pctl"]), 0.70)
+  expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.94)
+  expect_equal(as.numeric(est_pctls[2,"growth_pctl"]), 0.57)
+  expect_equal(as.numeric(est_pctls[3,"growth_pctl"]), 0.08)
+  expect_equal(as.numeric(est_pctls[4,"growth_pctl"]), 0.67)
+  expect_equal(as.numeric(est_pctls[5,"growth_pctl"]), 0.72)
+  expect_equal(as.numeric(est_pctls[6,"growth_pctl"]), 0.58)
 
   # math
-  expect_equal(as.numeric(est_pctls[7,"growth_pctl"]), 0.49)
-  expect_equal(as.numeric(est_pctls[8,"growth_pctl"]), 0.24)
-  expect_equal(as.numeric(est_pctls[9,"growth_pctl"]), 0.64)
-  expect_equal(as.numeric(est_pctls[10,"growth_pctl"]), 0.22)
-  expect_equal(as.numeric(est_pctls[11,"growth_pctl"]), 0.57)
-  expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.70)
+  expect_equal(as.numeric(est_pctls[7,"growth_pctl"]), 0.54)
+  expect_equal(as.numeric(est_pctls[8,"growth_pctl"]), 0.33)
+  expect_equal(as.numeric(est_pctls[9,"growth_pctl"]), 0.66)
+  expect_equal(as.numeric(est_pctls[10,"growth_pctl"]), 0.31)
+  expect_equal(as.numeric(est_pctls[11,"growth_pctl"]), 0.69)
+  expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.74)
 })
 
 test_that("collapse_grade_to_school() collapses everthing just fine" ,{
@@ -100,19 +100,19 @@ test_that("collapse_grade_to_school() collapses everthing just fine" ,{
   expect_equal(nrow(collapsed), 6)
   expect_equal(ncol(collapsed), 13)
   # reading
-  expect_equal(as.numeric(collapsed[1,"growth_pctl"]), 0.53)
-  expect_equal(as.numeric(collapsed[2,"growth_pctl"]), 0.71)
-  expect_equal(as.numeric(collapsed[3,"growth_pctl"]), 0.24)
-  expect_equal(as.numeric(collapsed[4,"growth_pctl"]), 0.07)
-  expect_equal(as.numeric(collapsed[5,"growth_pctl"]), 0.55)
-  expect_equal(as.numeric(collapsed[6,"growth_pctl"]), 0.71)
+  expect_equal(as.numeric(collapsed[1,"growth_pctl"]), 0.58)
+  expect_equal(as.numeric(collapsed[2,"growth_pctl"]), 0.85)
+  expect_equal(as.numeric(collapsed[3,"growth_pctl"]), 0.33)
+  expect_equal(as.numeric(collapsed[4,"growth_pctl"]), 0.08)
+  expect_equal(as.numeric(collapsed[5,"growth_pctl"]), 0.66)
+  expect_equal(as.numeric(collapsed[6,"growth_pctl"]), 0.66)
 
 
   # single grade schools
-  expect_equal(as.numeric(collapsed_single_grade[[1,"growth_pctl"]]), 0.24)
-  expect_equal(as.numeric(collapsed_single_grade[[2,"growth_pctl"]]), 0.07)
-  expect_equal(as.numeric(collapsed_single_grade[[3,"growth_pctl"]]), 0.64)
-  expect_equal(as.numeric(collapsed_single_grade[[4,"growth_pctl"]]), 0.43)
+  expect_equal(as.numeric(collapsed_single_grade[[1,"growth_pctl"]]), 0.33)
+  expect_equal(as.numeric(collapsed_single_grade[[2,"growth_pctl"]]), 0.08)
+  expect_equal(as.numeric(collapsed_single_grade[[3,"growth_pctl"]]), 0.66)
+  expect_equal(as.numeric(collapsed_single_grade[[4,"growth_pctl"]]), 0.57)
 
 })
 
@@ -129,20 +129,20 @@ test_that("school_growth_equated works when passing fall scores", {
   expect_equal(sum(school_growth_equated$student_level$equated), 204)
 
   # reading
-  expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.73)
-  expect_equal(as.numeric(est_pctls[2,"growth_pctl"]), 0.43)
-  expect_equal(as.numeric(est_pctls[3,"growth_pctl"]), 0.07)
-  expect_equal(as.numeric(est_pctls[4,"growth_pctl"]), 0.36)
-  expect_equal(as.numeric(est_pctls[5,"growth_pctl"]), 0.66)
-  expect_equal(as.numeric(est_pctls[6,"growth_pctl"]), 0.70)
+  expect_equal(as.numeric(est_pctls[1,"growth_pctl"]), 0.94)
+  expect_equal(as.numeric(est_pctls[2,"growth_pctl"]), 0.57)
+  expect_equal(as.numeric(est_pctls[3,"growth_pctl"]), 0.08)
+  expect_equal(as.numeric(est_pctls[4,"growth_pctl"]), 0.46)
+  expect_equal(as.numeric(est_pctls[5,"growth_pctl"]), 0.72)
+  expect_equal(as.numeric(est_pctls[6,"growth_pctl"]), 0.58)
 
   # math
-  expect_equal(as.numeric(est_pctls[7,"growth_pctl"]), 0.49)
-  expect_equal(as.numeric(est_pctls[8,"growth_pctl"]), 0.24)
-  expect_equal(as.numeric(est_pctls[9,"growth_pctl"]), 0.64)
-  expect_equal(as.numeric(est_pctls[10,"growth_pctl"]), 0.28)
-  expect_equal(as.numeric(est_pctls[11,"growth_pctl"]), 0.57)
-  expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.70)
+  expect_equal(as.numeric(est_pctls[7,"growth_pctl"]), 0.54)
+  expect_equal(as.numeric(est_pctls[8,"growth_pctl"]), 0.33)
+  expect_equal(as.numeric(est_pctls[9,"growth_pctl"]), 0.66)
+  expect_equal(as.numeric(est_pctls[10,"growth_pctl"]), 0.42)
+  expect_equal(as.numeric(est_pctls[11,"growth_pctl"]), 0.69)
+  expect_equal(as.numeric(est_pctls[12,"growth_pctl"]), 0.74)
 
 })
 

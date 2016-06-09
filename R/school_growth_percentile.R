@@ -42,7 +42,8 @@ school_growth_percentile <-  function(.data,
                                      ell_indicator="iep",
                                      school_indicator="schoolname",
                                      truncate_growth=TRUE,
-                                     fall_equate_scores=NULL){
+                                     fall_equate_scores=NULL,
+                                     norms = nwea_cps_school_level_norms_2015){
 
   #select only necessary columns
   map_df<-.data %>%
@@ -64,7 +65,7 @@ school_growth_percentile <-  function(.data,
                               map_year_academic==min(map_year_academic))
 
   map_end <- map_df %>% dplyr::filter(fallwinterspring==season2,
-                              map_year_academic==max(map_year_academic))
+                              map_year_academic==map_year_academic)
 
   map_matched<-dplyr::left_join(map_end,
                          map_start,
@@ -189,7 +190,7 @@ school_growth_percentile <-  function(.data,
                      avg_rit_end = round(mean(testritscore_final),1),
                      N_met=sum(met_typical),
                      pct_met=round(N_met/N_students,2)) %>%
-    dplyr::inner_join(nwea_cps_school_level_norms %>%
+    dplyr::inner_join(norms %>%
                  select(measurementscale,
                         grade_end,
                         avg_rit_start=rit_start,
@@ -288,7 +289,7 @@ truncated_growth <- function(truncation_percentile=.99,
 #'
 #' @export
 #'
-collapse_grade_to_school <- function(.data){
+collapse_grade_to_school <- function(.data, cps_constants = cps_constants_2015){
   # create skeleton that properly accounts for number of grades.  If
   # we have a single grade at a school, then we can take the incoming data
   # as is. Otherwise we got do some weighted averaging if the number of grades
@@ -446,10 +447,10 @@ equate_fall_to_spring <- function(growth_data=map_matched,
       ),
       testritscore_equated=round(test_rit_score_equated),
       season="Spring",
-      testpercentile_equated=get_test_percentile(measurementscale=measurementscale,
+      testpercentile_equated=max(get_test_percentile(measurementscale=measurementscale,
                                                  season=season,
                                                  grade_level=grade_fall-1,
-                                                 ritscore=testritscore_equated
+                                                 ritscore=testritscore_equated)
       )
       )
 
@@ -510,7 +511,8 @@ get_test_percentile <- function(measurementscale, season, grade_level, ritscore)
                 grade=grade_level,
                 RIT=ritscore)
   joined <- dplyr::left_join(x,
-                             student_status_norms_2015_dense_extended,
+                             student_status_norms_2015_dense_extended %>%
+                               mutate(fallwinterspring = as.character(fallwinterspring)),
                              by=c("measurementscale",
                                   "fallwinterspring",
                                   "grade",
@@ -518,12 +520,12 @@ get_test_percentile <- function(measurementscale, season, grade_level, ritscore)
   ) %>%
     dplyr::group_by(measurementscale, fallwinterspring, grade, RIT) %>%
     ungroup %>%
-    dplyr::select(percentile) %>%
+    dplyr::select(percentile = student_percentile) %>%
     unlist %>%
     as.integer
 
   # return
-  joined
+  max(joined) # ensures highest percentile returned
 }
 
 

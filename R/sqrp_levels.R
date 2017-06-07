@@ -616,7 +616,9 @@ sqrp_level<-function(school_name="Ascend",
 
   sqrp_level<-get_sqrp_level(round(sqrp_points_out,1))
 
-  out<-data.frame(points=sqrp_points_out,
+  out <- list()
+
+  out$level <-data.frame(points=sqrp_points_out,
                   level=sqrp_level)
 
 
@@ -624,7 +626,7 @@ sqrp_level<-function(school_name="Ascend",
   out_attr <- out_attr %>%
     select(category, sqrp_points, weight=new_weight, weighted_points)
 
-  attr(out, "metric_points") <- out_attr
+  out$points_detail <- out_attr
   # return
   out
 

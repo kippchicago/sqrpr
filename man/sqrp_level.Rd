@@ -29,7 +29,8 @@ sqrp_level(school_name = "Ascend", growth, attain, growth_pg_aa,
 \item{dqi}{Data quality index}
 }
 \value{
-a data frame with SQRP points and Level
+a a list with two data frames: `level` with SQRP points and Level and `points_detail`
+which provides detailed points information
 }
 \description{
 \code{sqrp_level} is a convenience wrapper that takes `sqrp_growth`

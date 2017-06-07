@@ -435,7 +435,8 @@ calc_pct_me<-function(growth){
 #'
 #' @export
 #'
-#' @return  a data frame with SQRP points and Level
+#' @return  a a list with two data frames: `level` with SQRP points and Level and `points_detail`
+#' which provides detailed points information
 
 sqrp_level<-function(school_name="Ascend",
                           growth,
@@ -618,8 +619,9 @@ sqrp_level<-function(school_name="Ascend",
 
   out <- list()
 
-  out$level <-data.frame(points=sqrp_points_out,
-                  level=sqrp_level)
+  out$level <-data.frame(school = school_name,
+                         points=sqrp_points_out,
+                         level=sqrp_level)
 
 
   out_attr <- attr(sqrp_points, "sqrp_weights_points")

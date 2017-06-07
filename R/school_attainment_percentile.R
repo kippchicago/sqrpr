@@ -169,7 +169,7 @@ collapse_grade_to_school_attainment <- function(.data,
 
 
 
-  stacked <- dplyr::rbind_list(multi_3_8_schools,
+  stacked <- dplyr::bind_rows(multi_3_8_schools,
                                single_grade_schools)
 
   if(2 %in% multi_grade_schools$grade){
@@ -179,7 +179,7 @@ collapse_grade_to_school_attainment <- function(.data,
       dplyr::rename(grades_served=grade,
                     N=N_students)
 
-    stacked <- dplyr::rbind_list(stacked, multi_2_schools)
+    stacked <- dplyr::bind_rows(stacked, multi_2_schools)
 
   }
 

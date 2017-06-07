@@ -13,7 +13,6 @@ calc_pct_me(growth)
 a data frame
 }
 \description{
-\code{calc_pct_me} calculates  typical growth percentage from 
+\code{calc_pct_me} calculates  typical growth percentage from
 an `sqrp_growth` object
 }
-

@@ -13,7 +13,7 @@ calc_5essentials_points(rating)
 a single element numeric vector
 }
 \description{
-\code{calc_5essentials_points} calculates  points given 
+\code{calc_5essentials_points} calculates  points given
 5Essentials Rating
 }
 \details{
@@ -26,4 +26,3 @@ a single element numeric vector
 \item "NYO" = Not Yet Organized
 }
 }
-

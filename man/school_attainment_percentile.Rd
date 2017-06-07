@@ -40,4 +40,3 @@ list with four data frames attached
 \code{school_attainment_percentile} is a workhourse function
 that calculates school attainment percentiles
 }
-

@@ -34,7 +34,6 @@ a data frame with SQRP points and Level
 \description{
 \code{sqrp_level} is a convenience wrapper that takes `sqrp_growth`
 and `sqrp_attainment` objects, as well as raw scores for non-MAP categores and
-a school name and returns a data frame containing that school's SQRP points 
+a school name and returns a data frame containing that school's SQRP points
 and level.
 }
-

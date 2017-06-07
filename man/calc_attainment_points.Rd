@@ -13,7 +13,6 @@ calc_attainment_points(pct)
 a single element numeric vector
 }
 \description{
-\code{calc_attainment_points} calculates  points for meeting 
+\code{calc_attainment_points} calculates  points for meeting
 exceding typical groth
 }
-

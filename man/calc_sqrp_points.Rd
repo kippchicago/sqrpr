@@ -38,7 +38,7 @@ American students}
 \item{school_growth_pctl_aa_mathematics}{growth percentile in mathematics for African American
 students}
 
-\item{school_growth_pctl_hisp_mathematics}{growth percentile in mathematics for 
+\item{school_growth_pctl_hisp_mathematics}{growth percentile in mathematics for
 Latino students}
 
 \item{school_growth_pctl_iep_mathematics}{growth percentile in mathematics for students with an IEP}
@@ -70,4 +70,3 @@ SQPR Points
 \code{calc_sqrp_points} calculates SQRP given performance in each
 category.  Reweighting is automagically performed.
 }
-

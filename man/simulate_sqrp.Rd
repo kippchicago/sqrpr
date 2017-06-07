@@ -37,4 +37,3 @@ a data.frame with SQRP points and levels with
 \description{
 \code{simulate_sqrp} runs simulation for SQRP proejctions.
 }
-

@@ -15,4 +15,3 @@ a single element factor vector
 \description{
 \code{get_sqrp_level} calculates SQRP level given SQRP points.
 }
-

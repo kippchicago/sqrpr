@@ -39,4 +39,3 @@ School Growth Percentile (NWEA)}.  Equating is only performed for grades 3-8.
 cps_equate(175, "Reading", 6)
 cps_equate(c(190, 175), c("Mathematics", "Reading"), c(6,7))
 }
-

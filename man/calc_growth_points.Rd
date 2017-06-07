@@ -15,4 +15,3 @@ a single element numeric vector
 \description{
 \code{calc_growth_points} calculates growht points
 }
-

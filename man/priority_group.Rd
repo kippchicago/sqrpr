@@ -37,4 +37,3 @@ the original data by the priority group and then reruns
 \code{\link{school_growth_percentile}}, depending on the class of 
 \code{sqrp_obj}
 }
-

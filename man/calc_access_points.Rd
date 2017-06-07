@@ -13,7 +13,6 @@ calc_access_points(pct)
 a single element numeric vector
 }
 \description{
-\code{calc_access_points} calculates  points for sufficient 
+\code{calc_access_points} calculates  points for sufficient
 growth on Access
 }
-

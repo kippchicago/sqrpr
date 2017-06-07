@@ -25,4 +25,3 @@ vector of RIT scores equivilent to specified growth percentile
 \code{truncated_growth} calculates rit score associated
 with a given student growth percentile
 }
-

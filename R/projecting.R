@@ -104,7 +104,7 @@ project_s2s<-function(.data, student_column = "studentid",
              )
 
 
-      map_df <- dplyr::rbind_list(map_df, fall_equated) %>%
+      map_df <- dplyr::bind_rows(map_df, fall_equated) %>%
         mutate(equated=ifelse(is.na(equated), FALSE, TRUE))
     }
   }
@@ -159,7 +159,7 @@ project_s2s<-function(.data, student_column = "studentid",
          -sd_growth
          )
 
-  out<-dplyr::rbind_list(map_df, map_df_s2) %>%
+  out<-dplyr::bind_rows(map_df, map_df_s2) %>%
     rename(schoolname=school)
 
   out
@@ -293,7 +293,7 @@ simulate_sqrp<-function(spring_pretest_cdf,
   for(i in 1:n_sims){
     sims<-do.call(simulate_once_sqrp_data,args_list)
 
-    out<-rbind_list(out, sims)
+    out<-bind_rows(out, sims)
   }
 
   out

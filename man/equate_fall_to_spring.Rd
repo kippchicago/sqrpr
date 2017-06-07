@@ -23,4 +23,3 @@ a data frame with missing prior_spring test scores updated with
 equated scores.  An `equated` indcator is added to the
 resulting data frame.
 }
-

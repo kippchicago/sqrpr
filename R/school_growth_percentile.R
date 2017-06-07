@@ -348,7 +348,7 @@ collapse_grade_to_school <- function(.data, cps_constants = cps_constants_2015){
                     growth_pctl = ifelse(growth_pctl<.01, .01, growth_pctl)
       )
 
-    stacked <- dplyr::rbind_list(multi_grade_schools,
+    stacked <- dplyr::bind_rows(multi_grade_schools,
                                  single_grade_schools)
   }  else {
     stacked <- single_grade_schools

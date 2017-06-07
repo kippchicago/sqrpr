@@ -13,4 +13,3 @@ ensure_subjects(.)
 checks if `measurementscale` field only contains "Mathematics" or
 "Reading"
 }
-

@@ -12,4 +12,3 @@ ensure_fall_data(.)
 \description{
 checks `names(.)` for correct columns
 }
-

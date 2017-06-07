@@ -71,4 +71,3 @@ and after filtering to the second season to \code{\link{school_attainment_percen
  As with \code{\link{school_growth_percentile}}, you can pass single
  season CDF of fall results to impute prior spring scores for students
 }
-

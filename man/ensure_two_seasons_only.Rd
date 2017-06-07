@@ -12,4 +12,3 @@ ensure_two_seasons_only(.)
 \description{
 checks if `testterm` field has exactly two terms
 }
-

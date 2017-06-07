@@ -35,4 +35,3 @@ a data.frame with SQRP points and levels
 \code{simulate_once_sqrp_data} produces a single iteration
 of \code{\link{simulate_sqrp}}.  Essentially it is a building block function.
 }
-

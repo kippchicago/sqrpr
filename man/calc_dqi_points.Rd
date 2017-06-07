@@ -15,4 +15,3 @@ a single element numeric vector
 \description{
 \code{calc_dqi_points} calculates  points given DQI score
 }
-

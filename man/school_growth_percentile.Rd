@@ -54,4 +54,3 @@ Currently this function (indeed, this package) only supports spring-to-spring ca
 CPS will equate your fall scores anyway, this function does support equating fall to prior spring scores. see the
 `fall_equate_score` parameter below for more details.
 }
-

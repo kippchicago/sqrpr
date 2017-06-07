@@ -626,7 +626,8 @@ sqrp_level<-function(school_name="Ascend",
 
   out_attr <- attr(sqrp_points, "sqrp_weights_points")
   out_attr <- out_attr %>%
-    select(category, sqrp_points, weight=new_weight, weighted_points)
+    mutate(school = school_name) %>%
+    select(school, category, sqrp_points, weight=new_weight, weighted_points)
 
   out$points_detail <- out_attr
   # return
